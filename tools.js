@@ -39,7 +39,7 @@ function escapeHTML (str) {
 	var el = document.createElement("div");
 	el.innerText = el.textContent = str;
 	return el.innerHTML;
-}
+} 
 
 // 获得元素内的纯文本
 function getInnerText(str) {
