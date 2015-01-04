@@ -350,3 +350,52 @@ function getBase64Image(img) {
 
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
+
+function text_truncate(text, need_width, ellipsis_pos) {
+    if (text.length <= need_width) {
+        return text;
+    }
+    var ellipsis = '...';
+    if (ellipsis_pos < 0) { // 省略号在左边
+        var start = text.length - need_width;
+        return ellipsis + text.substr(start, need_width);
+    }
+    if (ellipsis_pos == 0) { // 省略号在中间
+        var start = text.length - need_width / 2;
+        return text.substr(0, need_width/2) + ellipsis + text.substr(start, need_width/2);
+    }
+    if (ellipsis_pos > 0) { // 省略号在右边
+        return text.substr(0, need_width) + ellipsis;
+    }
+}
+
+function CookieToForm(formId) {
+    var $form = $(formId);
+    var fields = $form.serializeArray();
+    for (var i = 0; i < fields.length; i++) {
+        var obj = fields[i];
+        var name = obj['name'];
+        var value = $.cookie(formId + "-form-" + name);
+        $form.find("[name=" + name + "]").val(value);
+    }
+}
+
+function FormToCookie(formId) {
+    var $form = $(formId);
+    $(window).on("beforeunload", function (e) {
+        var ary = $form.serializeArray();
+        for (var i = 0; i < ary.length; ++i) {
+            var obj = ary[i];
+            var name = obj['name'];
+            var value = obj['value'];
+            $.cookie(formId + "-form-" + name, value, {expires: 30});
+        }
+    });
+}
+
+function randint(beg, end) {
+    var ret = parseInt(Math.random() * end * 10 + beg) % end;
+    if (ret < beg)
+        ret += beg;
+    return ret;
+}
