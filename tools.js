@@ -399,3 +399,21 @@ function randint(beg, end) {
         ret += beg;
     return ret;
 }
+
+
+// 获得图片的宽和高，第一个参数不能是 img 元素，第二个参数用来接收宽和高：function (width, height) {}
+function getImgWH(fileObject, callback) {
+    var img = new Image();
+    if (typeof callback === 'function') {
+        var fr = new FileReader();
+        fr.onloadend = function () {
+            img.src = fr.result;
+        }
+        img.onload = function () {
+            callback(img.width, img.height);
+        }
+        fr.readAsDataURL(fileObject);
+    } else {
+        throw new Exception("callback must be provided!")
+    }
+}
